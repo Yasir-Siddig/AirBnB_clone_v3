@@ -1,61 +1,86 @@
-# Synopsis
+# AirBnB Clone
 
-> The Airbnb clone project for which we are creating a copy of the [Airbnb](https://www.airbnb.com/).
-> Only some features will be implemented and will be listed below once completed.
-> At this stage, we are implementing an additional storage option. Based on which 
-> database is chosen (file storage or database storage), JSON is used or
-> MySQL and SQLalchemy is used via Python. Fabric is used for application deployment.
+**Purpose**
+
+The purpose of this project is to recreate the AirBnB site, from the back-end data management to the front-end user interface. 
 
 
-## Features
+<h4>third phase</h4>
+Build an API. To implement, run the API module. Current implmentation requires an existing database in mysql. 
 
-### Command Interpreter
+Run at the root of the folder
+<pre><code>
+>>> HBNB_MYSQL_USER=hbnb_dev HBNB_MYSQL_PWD=hbnb_dev_pwd HBNB_MYSQL_HOST=localhost HBNB_MYSQL_DB=hbnb_dev_db HBNB_TYPE_STORAGE=db HBNB_API_HOST=0.0.0.0 HBNB_API_PORT=5000 python3 -m api.v1.app
+</code></pre>
+Expected response:
+<pre><code>
+ * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+...
+</code></pre>
+A list of all the possible routes and their respective routes are available on Flasgger's application, <a href="http://0.0.0.0:5000/apidocs/">here</a>. 
 
-#### Description
+Input route for specific api request and available route below.
 
-The Command Interpreter is used to manage the whole application's functionality from the command line, such as:
-+ Create a new object.
-+ Retrieve an object from a file, database, etc.
-+ Execute operation on objects. e.g. Count, compute statistics, etc.
-+ Update object's attributes.
-+ Destroy an object.
+http://0.0.0.0:5000/api/v1/{Route}
 
-#### Usage
+| Route                                    | Request            |
+|------------------------------------------|--------------------|
+| states                                   | [GET, POST]        |
+| states/<state_id>                        | [GET, DELETE, PUT] |
+| states/<state_id>/cities                 | [GET, POST]        |
+| cities/<city_id>                         | [GET, DELETE. PUT] |
+| amenities                                | [GET, POST]        |
+| amenities/<amenity_ids>                  | [GET, DELETE, PUT] |
+| users                                    | [GET, POST]        |
+| users/<user_id>                          | [GET, DELETE, PUT  |
+| cities/<city_id>/places                  | [GET, POST]        |
+| places/<place_id>                        | [GET, DELETE, PUT] |
+| places/<place_id>/amenities              | [GET, DELETE]      |
+| places/<place_id>/amenities/<amenity_id> | [POST]             |
+| places/<place_id>/reviews                | [GET, POST]        |
+| reviews/<review_id>                      | [GET, DELETE, PUT] |
+| places                                   | [POST]             |
 
-To launch the console application in interactive mode simply run:
 
-```console.py ```
+<h4>second phase</h4>
+Command line interpretor can now save objects into a mysql database by setting the following environmental variables. The database schema is <a href="https://s3.amazonaws.com/intranet-projects-files/holbertonschool-higher-level_programming+/289/AirBnb_DB_diagramm.jpg">here</a> and below.
+<img src="https://s3.amazonaws.com/intranet-projects-files/holbertonschool-higher-level_programming+/289/AirBnb_DB_diagramm.jpg" alt="HBnB Class Relationship">
 
-or to use the non-interactive mode run:
+* MySQL user = <HBNB_MYSQL_USER>
+* MySQL password = <HBNB_MYSQL_PWD>
+* MySQL host = <HBNB_MYSQL_HOST> (typically = localhost)
+* MySQL database = HBNB_MYSQL_DB
+* HBNB_TYPE_STORAGE = db
 
-```echo "your-command-goes-here" | ./console.py ```
+<h4>first phase</h4>
+Where we are creating a command line interpretor to access objects that will store user data. Users can use the console to create objects, update object attributes, remove objects, list all objects, and store and read data from a .json file. 
 
-#### Commands
+----------------------------------------
 
-Commands | Description | Usage
--------- | ----------- |-------- |
-**help** or **?**| Displays the documented commands. | **help**
-**quit**     | Exits the program. | **quit**
-**EOF**      | Ends the program. Used when files are passed into the program. | N/A
-**create**  | Creates a new instance of the \<class_name\>. Creates a Json file with the object representation. and prints the id of created object. | **create** \<class_name\>
-**show**    | Prints the string representation of an instance based on the class name and id. | **show** \<class_name class_id\>
-**destroy** | Deletes and instance base on the class name and id. | **destroy** \<class_name class_id\>
-**all** | Prints all string representation of all instances based or not on the class name | **all** or **all** \<class_name class_id\>
-**update** | Updates an instance based on the class name and id by adding or updating attribute | **update** \<class_name class_id key value\>
+**Authors**
+- **Philip Yoo**, \<philip.yoo@holbertonschool.com>, @philipYoo10
+- **Jianqin Wang**, \<jianqin.wang@holbertonschool.com>, @jianqinwang94
+- **Anne Cognet**, \<anne.cognet@holbertonschool.com>, @1million40
+- **Richard Sim**, \<richard.sim@holbertonschool.com>, @rdsim8589
 
-## Resources
-* Fabric: [Usage1](https://www.digitalocean.com/community/tutorials/how-to-use-fabric-to-automate-administration-tasks-and-deployments), [Usage2](https://www.pythonforbeginners.com/systems-programming/how-to-use-fabric-in-python), [Documenation](http://www.fabfile.org/)
-* Nginx: [Beginner's Config file](http://nginx.org/en/docs/beginners_guide.html), [Root vs Alias](https://blog.heitorsilva.com/en/nginx/diferenca-entre-root-e-alias-do-nginx/), 
+----------------------------------------
 
-## Tests
+In order to begin the console, you can run either 'python3 console.py' or './console.py' in the command line.
 
-If you wish to run at the test for this application all of the test are located
-under the **test/** folder and can execute all of them by simply running:
+Classes that are currently supported include BaseModel, User, City, State, Amenity, Review, and Place.
 
-```python3 -m unittest discover tests ```
+The console currently supports the following commands:
+- **create \<class name>**, which will create an object of the class declared by user;
+- **show \<class name> \<id>**, which will display the object information if it exists;
+- **destroy \<class name> \<id>**, which will delete the object if it exists;
+- **all \<class name>**, where the class name input is optional and the console will display all instances, or all instances of a specified object;
+- **update \<class name> \<id> \<attribute name> \<attribute value>**, whilch will update an instance attribute of a previously declared object.
 
-from the root directory.
-
-## Bugs
-
-+ No known bugs at this time.
+Additionally, the console also supports the following command formats:
+- **\<class name>.all()**, which will display all instances of the specified class;
+- **\<class name>.count()**, whilch will display the number of instances of the specified class;
+- **\<class name>.show(\<id>)**, whilch will display the instance with correct id and class;
+- **\<class name>.destroy(\<id>)**, which will delete the instance with correct id and class;
+- **\<class name>.update(\<id>, \<attribute name>, \<attribute value>)**, which will update an instance of the given class and id with the new attribute;
+- **\<class name>.update(\<id>, \<dictionary representation>)**, which will update an instance of the given class and id with a dictionary of key value pairs that will be new attributes for the objects. 
+- **\<class name>.create(<key>=<value>) create an instance of the class
