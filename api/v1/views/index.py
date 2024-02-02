@@ -1,62 +1,29 @@
 #!/usr/bin/python3
 """
-Index model holds the endpoint (route)
+This module contains endpoint(route) status
 """
-from api.v1.views import app_views, storage
+from models import storage
+from flask import Flask
+from api.v1.views import app_views
 from flask import jsonify
 
 
-@app_views.route('/status/')
+@app_views.route('/status', strict_slashes=False)
 def status():
-    """Example endpoint returns status
-    returns the current status of the API
-    ---
-    definitions:
-      status:
-        type: object
-      Color:
-        type: string
-      items:
-        $ref: '#/definitions/Color'
-
-    responses:
-      200:
-        description: dictionary with 'status' as key and 'ok' as keyvalue
-        schema:
-          $ref: '#/definitions/State'
-        examples:
-            {"status": "OK"}
+    """
+    Returns a JSON status
     """
     return jsonify({"status": "OK"})
 
 
-@app_views.route('/stats/')
-def stats():
-    """Example endpoint returns stats
-    returns a number of objects of each class
-    ---
-    definitions:
-      status:
-        type: object
-      Color:
-        type: string
-      items:
-        $ref: '#/definitions/Color'
-
-    responses:
-      200:
-        description: dictionary with 'status' as key and 'ok' as keyvalue
-        schema:
-          $ref: '#/definitions/State'
-        examples:
-           { "amenities": 47, "cities": 36, "places": 154, "reviews": 718,
-             "states": 27, "users": 31}
+@app_views.route('/stats', strict_slashes=False)
+def count():
     """
-    models_available = {"User": "users",
-                        "Amenity": "amenities", "City": "cities",
-                        "Place": "places", "Review": "reviews",
-                        "State": "states"}
-    stats = {}
-    for cls in models_available.keys():
-        stats[models_available[cls]] = storage.count(cls)
-    return jsonify(stats)
+    Retrieves the number of each objects by type
+    """
+    return jsonify({"amenities": storage.count("Amenity"),
+                    "cities": storage.count("City"),
+                    "places": storage.count("Place"),
+                    "reviews": storage.count("Review"),
+                    "states": storage.count("State"),
+                    "users": storage.count("User")})
